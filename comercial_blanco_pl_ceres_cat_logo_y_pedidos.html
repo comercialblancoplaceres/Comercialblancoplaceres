@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comercial Blanco Pláceres | Tu Abasto de Confianza</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Personalización de scrollbar y animaciones fluidas */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        .animate-pop {
+            animation: pop 0.2s ease-out;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800 pb-24 md:pb-12">
+
+    <!-- BARRA SUPERIOR FIJA / HEADER -->
+    <header class="bg-brand-700 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-2 rounded-lg text-brand-700 shadow-inner">
+                    <i data-lucide="shopping-bag" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight">Comercial Blanco Pláceres</h1>
+                    <p class="text-xs text-brand-100">Calidad, frescura y excelente atención</p>
+                </div>
+            </div>
+
+            <!-- Panel de Control de Tasa BCV -->
+            <div class="flex items-center bg-brand-800 px-3 py-1.5 rounded-lg border border-brand-600 shadow-sm gap-2">
+                <div class="flex items-center gap-1.5 text-xs md:text-sm font-semibold">
+                    <i data-lucide="banknote" class="w-4 h-4 text-emerald-300"></i>
+                    <span>Tasa BCV:</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-xs mr-1 text-emerald-200">Bs.</span>
+                    <input type="number" id="tasa-bcv" value="48.50" step="0.01" min="0" 
+                        class="w-20 px-2 py-0.5 rounded text-gray-900 font-bold text-center text-sm border-2 border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-300">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- BANNER PROMOCIONAL -->
+    <section class="bg-emerald-600 text-white text-center py-2 px-4 text-xs md:text-sm font-medium">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+            <i data-lucide="truck" class="w-4 h-4"></i>
+            <span>Realiza tu pedido en línea y recíbelo rápidamente. ¡Precios en dólares convertidos a la tasa oficial!</span>
+        </div>
+    </section>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- CATÁLOGO DE PRODUCTOS (2 Columnas en escritorio) -->
+        <section class="lg:col-span-2">
+            <!-- Filtros y Búsqueda -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
+                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <i data-lucide="grid" class="w-5 h-5 text-brand-600"></i> Catálogo de Productos
+                </h2>
+                <div class="relative w-full sm:w-64">
+                    <input type="text" id="input-busqueda" placeholder="Buscar producto..." 
+                        class="w-full pl-9 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-3"></i>
+                </div>
+            </div>
+
+            <!-- Grid de Productos -->
+            <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Se llena dinámicamente con JS -->
+            </div>
+        </section>
+
+        <!-- CARRITO Y FORMULARIO DE PEDIDO -->
+        <section class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-5 sticky top-20">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                    <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 text-brand-600"></i> Tu Pedido
+                    </h2>
+                    <span id="cant-items" class="bg-brand-100 text-brand-800 text-xs font-bold px-2.5 py-1 rounded-full">0 ítems</span>
+                </div>
+
+                <!-- Lista de Ítems del Carrito -->
+                <div id="lista-carrito" class="py-4 max-h-60 overflow-y-auto divide-y divide-gray-100">
+                    <!-- Estado Vacío -->
+                    <div id="carrito-vacio" class="text-center py-8 text-gray-400">
+                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-2 opacity-50"></i>
+                        <p class="text-sm">Tu carrito está vacío</p>
+                        <p class="text-xs text-gray-400 mt-1">Selecciona productos para comenzar</p>
+                    </div>
+                </div>
+
+                <!-- Totales -->
+                <div class="border-t border-gray-100 pt-4 space-y-2 bg-gray-50 p-3 rounded-lg mb-5">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Total USD:</span>
+                        <span id="total-usd" class="font-semibold text-gray-900">$0.00</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold">
+                        <span class="text-gray-800">Total a Pagar (Bs):</span>
+                        <span id="total-bs" class="text-brand-700">Bs. 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Formulario de Datos del Cliente -->
+                <form id="form-pedido" class="space-y-3">
+                    <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Datos para la entrega</h3>
+                    
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Nombre y Apellido *</label>
+                        <div class="relative">
+                            <input type="text" id="cliente-nombre" required placeholder="Ej. Juan Pérez" 
+                                class="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <i data-lucide="user" class="w-4 h-4 text-gray-400 absolute left-2.5 top-2.5"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Número de Teléfono *</label>
+                        <div class="relative">
+                            <input type="tel" id="cliente-telefono" required placeholder="Ej. 04141234567" 
+                                class="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <i data-lucide="phone" class="w-4 h-4 text-gray-400 absolute left-2.5 top-2.5"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1">Dirección Corta de Entrega *</label>
+                        <div class="relative">
+                            <input type="text" id="cliente-direccion" required placeholder="Ej. Urb. Central, Calle 3, Casa #12" 
+                                class="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-gray-400 absolute left-2.5 top-2.5"></i>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Enviar WhatsApp -->
+                    <button type="submit" 
+                        class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow border-b-4 border-emerald-800 hover:border-emerald-900 transition-all flex items-center justify-center gap-2 text-sm">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i>
+                        Enviar Pedido por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- NOTIFICACIÓN TIPO TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-3 rounded-lg shadow-xl hidden transition-opacity duration-300 flex items-center gap-2 z-50 text-sm">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toast-mensaje">Producto agregado al carrito</span>
+    </div>
+
+    <!-- LOGICA JAVASCRIPT -->
+    <script>
+        // CONFIGURACIÓN: Número de WhatsApp del Abasto (Formato Internacional sin el signo +)
+        const WHATSAPP_NUMERO = "584120000000"; // Reemplaza con tu número de teléfono real
+
+        // BASE DE DATOS DE PRODUCTOS
+        const productosDB = [
+            { id: 1, nombre: "Harina de Maíz Precocida 1kg", precioUSD: 1.10, disponible: true, imagen: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=60" },
+            { id: 2, nombre: "Aceite Vegetal 1 Litro", precioUSD: 2.50, disponible: true, imagen: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=60" },
+            { id: 3, nombre: "Arroz Blanco Grano Largo 1kg", precioUSD: 1.20, disponible: true, imagen: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=60" },
+            { id: 4, nombre: "Azúcar Refinada 1kg", precioUSD: 1.15, disponible: true, imagen: "https://images.unsplash.com/photo-1622484210800-4081c7e930f3?w=400&auto=format&fit=crop&q=60" },
+            { id: 5, nombre: "Café Molido Gourmet 250g", precioUSD: 2.80, disponible: false, imagen: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=60" },
+            { id: 6, nombre: "Pasta Plumas 500g", precioUSD: 0.95, disponible: true, imagen: "https://images.unsplash.com/photo-1551462147-ff29053bfc14?w=400&auto=format&fit=crop&q=60" },
+            { id: 7, nombre: "Leche en Polvo 400g", precioUSD: 3.90, disponible: true, imagen: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&auto=format&fit=crop&q=60" },
+            { id: 8, nombre: "Mantequilla con Sal 200g", precioUSD: 1.75, disponible: true, imagen: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&auto=format&fit=crop&q=60" },
+            { id: 9, nombre: "Atún en Ensalada / Agua 140g", precioUSD: 1.30, disponible: true, imagen: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&auto=format&fit=crop&q=60" }
+        ];
+
+        // ESTADO DE LA APLICACIÓN
+        let carrito = [];
+        let tasaBCV = parseFloat(document.getElementById('tasa-bcv').value) || 48.50;
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderizarProductos(productosDB);
+            
+            // Listener para cambios de tasa BCV
+            document.getElementById('tasa-bcv').addEventListener('input', (e) => {
+                tasaBCV = parseFloat(e.target.value) || 0;
+                renderizarProductos(productosDB);
+                actualizarCarritoUI();
+            });
+
+            // Buscador de productos
+            document.getElementById('input-busqueda').addEventListener('input', (e) => {
+                const busqueda = e.target.value.toLowerCase();
+                const filtrados = productosDB.filter(p => p.nombre.toLowerCase().includes(busqueda));
+                renderizarProductos(filtrados);
+            });
+
+            // Manejador del Formulario
+            document.getElementById('form-pedido').addEventListener('submit', enviarPedidoWhatsApp);
+        });
+
+        // RENDERIZAR PRODUCTOS
+        function renderizarProductos(productos) {
+            const grid = document.getElementById('grid-productos');
+            grid.innerHTML = '';
+
+            if(productos.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-gray-400">No se encontraron productos.</div>`;
+                return;
+            }
+
+            productos.forEach(prod => {
+                const precioBs = (prod.precioUSD * tasaBCV).toFixed(2);
+                
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-40 bg-gray-100 overflow-hidden">
+                            <img src="${prod.imagen}" alt="${prod.nombre}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x300/e2e8f0/64748b?text=Producto'">
+                            <span class="absolute top-2 right-2 px-2.5 py-0.5 text-xs font-semibold rounded-full ${prod.disponible ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+                                ${prod.disponible ? 'Disponible' : 'Agotado'}
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-800 text-sm mb-1 leading-snug">${prod.nombre}</h3>
+                            <div class="mt-2">
+                                <div class="text-base font-bold text-gray-900">$${prod.precioUSD.toFixed(2)}</div>
+                                <div class="text-xs text-brand-700 font-medium">Bs. ${formatearNumero(precioBs)}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <button 
+                            onclick="agregarAlCarrito(${prod.id})" 
+                            ${!prod.disponible ? 'disabled' : ''} 
+                            class="w-full py-2 px-3 bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-medium text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                            ${prod.disponible ? 'Agregar al Carrito' : 'Sin Stock'}
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // FUNCIONALIDADES DEL CARRITO
+        function agregarAlCarrito(id) {
+            const producto = productosDB.find(p => p.id === id);
+            if (!producto || !producto.disponible) return;
+
+            const itemExistente = carrito.find(item => item.id === id);
+            if (itemExistente) {
+                itemExistente.cantidad += 1;
+            } else {
+                carrito.push({ ...producto, cantidad: 1 });
+            }
+
+            actualizarCarritoUI();
+            mostrarToast(`" ${producto.nombre} " agregado al carrito`);
+        }
+
+        function cambiarCantidad(id, cambio) {
+            const item = carrito.find(item => item.id === id);
+            if (!item) return;
+
+            item.cantidad += cambio;
+            if (item.cantidad <= 0) {
+                carrito = carrito.filter(i => i.id !== id);
+            }
+            actualizarCarritoUI();
+        }
+
+        function eliminarItem(id) {
+            carrito = carrito.filter(item => item.id !== id);
+            actualizarCarritoUI();
+        }
+
+        function actualizarCarritoUI() {
+            const contenedor = document.getElementById('lista-carrito');
+            const carritoVacio = document.getElementById('carrito-vacio');
+            const totalUSDElement = document.getElementById('total-usd');
+            const totalBsElement = document.getElementById('total-bs');
+            const cantItemsElement = document.getElementById('cant-items');
+
+            const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            cantItemsElement.textContent = `${totalItems} ítem${totalItems !== 1 ? 's' : ''}`;
+
+            if (carrito.length === 0) {
+                contenedor.innerHTML = '';
+                contenedor.appendChild(carritoVacio);
+                totalUSDElement.textContent = '$0.00';
+                totalBsElement.textContent = 'Bs. 0,00';
+                return;
+            }
+
+            contenedor.innerHTML = '';
+            let totalUSD = 0;
+
+            carrito.forEach(item => {
+                const subtotalItemUSD = item.precioUSD * item.cantidad;
+                const subtotalItemBs = subtotalItemUSD * tasaBCV;
+                totalUSD += subtotalItemUSD;
+
+                const div = document.createElement('div');
+                div.className = "py-3 flex items-center justify-between gap-2 animate-pop";
+                div.innerHTML = `
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs font-semibold text-gray-800 truncate">${item.nombre}</p>
+                        <p class="text-xs text-gray-500">$${item.precioUSD.toFixed(2)} c/u</p>
+                        <p class="text-xs font-bold text-brand-700">Bs. ${formatearNumero(subtotalItemBs.toFixed(2))}</p>
+                    </div>
+                    <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-md">
+                        <button onclick="cambiarCantidad(${item.id}, -1)" class="w-5 h-5 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded text-xs font-bold">-</button>
+                        <span class="text-xs font-semibold w-5 text-center">${item.cantidad}</span>
+                        <button onclick="cambiarCantidad(${item.id}, 1)" class="w-5 h-5 flex items-center justify-center text-gray-600 hover:bg-gray-200 rounded text-xs font-bold">+</button>
+                    </div>
+                    <button onclick="eliminarItem(${item.id})" class="text-red-400 hover:text-red-600 p-1">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                contenedor.appendChild(div);
+            });
+
+            const totalBs = totalUSD * tasaBCV;
+            totalUSDElement.textContent = `$${totalUSD.toFixed(2)}`;
+            totalBsElement.textContent = `Bs. ${formatearNumero(totalBs.toFixed(2))}`;
+
+            lucide.createIcons();
+        }
+
+        // GENERAR MENSAJE Y ABRIR WHATSAPP
+        function enviarPedidoWhatsApp(e) {
+            e.preventDefault();
+
+            if (carrito.length === 0) {
+                mostrarToast("Añade al menos un producto al carrito para realizar el pedido");
+                return;
+            }
+
+            const nombre = document.getElementById('cliente-nombre').value.trim();
+            const telefono = document.getElementById('cliente-telefono').value.trim();
+            const direccion = document.getElementById('cliente-direccion').value.trim();
+
+            let totalUSD = 0;
+            let resumenProductos = "";
+
+            carrito.forEach((item, index) => {
+                const subtotalUSD = item.precioUSD * item.cantidad;
+                const subtotalBs = subtotalUSD * tasaBCV;
+                totalUSD += subtotalUSD;
+
+                resumenProductos += `${index + 1}. *${item.nombre}*\n   Cant: ${item.cantidad} | Subtotal: $${subtotalUSD.toFixed(2)} (Bs. ${formatearNumero(subtotalBs.toFixed(2))})\n`;
+            });
+
+            const totalBs = totalUSD * tasaBCV;
+
+            // Armar texto codificado para la URL de WhatsApp
+            let mensaje = `🛒 *NUEVO PEDIDO - COMERCIAL BLANCO PLÁCERES*\n\n`;
+            mensaje += `👤 *Datos del Cliente:*\n`;
+            mensaje += `• *Nombre:* ${nombre}\n`;
+            mensaje += `• *Teléfono:* ${telefono}\n`;
+            mensaje += `• *Dirección:* ${direccion}\n\n`;
+            mensaje += `📦 *Detalle de la Orden:*\n${resumenProductos}\n`;
+            mensaje += `💵 *Total en USD:* $${totalUSD.toFixed(2)}\n`;
+            mensaje += `🇻🇪 *Total en Bs:* Bs. ${formatearNumero(totalBs.toFixed(2))}\n`;
+            mensaje += `📊 *Tasa BCV Aplicada:* Bs. ${tasaBCV.toFixed(2)}\n\n`;
+            mensaje += `¡Hola! Quisiera procesar y confirmar este pedido.`;
+
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMERO}&text=${encodeURIComponent(mensaje)}`;
+            
+            // Abrir WhatsApp en una pestaña nueva
+            window.open(urlWhatsApp, '_blank');
+        }
+
+        // AUXILIARES
+        function formatearNumero(numero) {
+            return parseFloat(numero).toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function mostrarToast(mensaje) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-mensaje').textContent = mensaje;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
